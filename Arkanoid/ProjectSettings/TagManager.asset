@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ball
   layers:
   - Default
   - TransparentFX
@@ -38,6 +39,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3787801809
+    locked: 0
+  - name: Paddle
+    uniqueID: 2700299145
+    locked: 0
+  - name: Ball
+    uniqueID: 583914709
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
