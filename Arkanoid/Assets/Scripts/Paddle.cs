@@ -23,10 +23,10 @@ public class Paddle : MonoBehaviour
     #endregion
     private Camera mainCamera;
     private float paddleInitialY;
-    private float defaultPaddleWidthInPixels = 200;
+    //private float defaultPaddleWidthInPixels = 200;
     private float defaultLeftClamp = -7.53f;
     private float defaultRightClamp = 7.56f;
-    private float speed = 0.02f;
+    private float speed = 0.04f;
     private Vector2 moveDelta;
     private SpriteRenderer sr;
     private void Start()
@@ -47,7 +47,7 @@ public class Paddle : MonoBehaviour
     {
 
 
-        float paddleShift = (defaultPaddleWidthInPixels - ((defaultPaddleWidthInPixels / 2) * sr.size.x)) / 2;
+        //float paddleShift = (defaultPaddleWidthInPixels - ((defaultPaddleWidthInPixels / 2) * sr.size.x)) / 2;
         float leftClamp = defaultLeftClamp;
         float rightClamp = defaultRightClamp;
        
