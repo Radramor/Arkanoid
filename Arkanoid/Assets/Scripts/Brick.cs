@@ -8,7 +8,7 @@ public class Brick : MonoBehaviour
     private SpriteRenderer sr;
     public int Hitpoints = 1;
 
-    //public static event Action<Brick> OnBrickDestruction;
+    public static event Action<Brick> OnBrickDestruction;
 
     //private void Start()
     //{
@@ -31,8 +31,9 @@ public class Brick : MonoBehaviour
         Hitpoints--;
         if (Hitpoints <=0)
         {
-            //OnBrickDestruction?.Invoke(this);
-            Destroy(gameObject);
+            BricksManager.Instance.RemainingBricks.Remove(this);
+            OnBrickDestruction?.Invoke(this);
+            Destroy(this.gameObject);
         }
         else
         {

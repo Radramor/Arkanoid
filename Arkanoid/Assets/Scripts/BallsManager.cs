@@ -31,7 +31,7 @@ public class BallsManager : MonoBehaviour
     private Ball initialBall;
 
     private Rigidbody2D initialBallRb;
-
+    private bool victoryScreen;
     public float initialBallSpeed = 2000;
 
     public List<Ball> Balls { get; set; }
@@ -58,7 +58,15 @@ public class BallsManager : MonoBehaviour
         }
     }
 
-
+    public void ResetBalls()
+    {
+        foreach (var ball in this.Balls.ToList())
+        {
+            Destroy(ball.gameObject);
+        }
+        if(BricksManager.Instance.CurrentLevel < BricksManager.Instance.LevelsData.Count)
+        InitBall();
+    }
     private void InitBall()
     {
         Vector3 paddlePosition = Paddle.Instance.gameObject.transform.position;
