@@ -24,13 +24,14 @@ public class BricksManager : MonoBehaviour
 
     #endregion
 
-    private int maxRows = 17;
-    private int maxCols = 12;
+    private int maxRows = 10;
+    private int maxCols = 18;
     private GameObject bricksContainer;
     //начальное положение первого кирпича
-    private float initialBrickSpawnPositionX = -7.8f;
+    private float initialBrickSpawnPositionX = -7.7f;
     private float initialBrickSpawnPositionY = 3.24f;
-    private float shiftAmount = 1.001f;
+    private float shiftAmountX = 0.9f;
+    private float shiftAmountY = 0.5f;
 
     public Brick brickPrefab;
 
@@ -77,7 +78,7 @@ public class BricksManager : MonoBehaviour
                     zShift += 0.0001f;
                 }
 
-                currentSpawnX += shiftAmount;
+                currentSpawnX += shiftAmountX;
                 //достигли ли конца столбцов
                 if (col + 1 == this.maxCols)
                 {
@@ -85,7 +86,7 @@ public class BricksManager : MonoBehaviour
                 }
             }
 
-            currentSpawnY -= shiftAmount;
+            currentSpawnY -= shiftAmountY;
         }
 
         this.InitialBricksCount = this.RemainingBricks.Count;

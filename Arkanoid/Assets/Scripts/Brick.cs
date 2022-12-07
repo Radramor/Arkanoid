@@ -8,7 +8,7 @@ public class Brick : MonoBehaviour
     private SpriteRenderer sr;
     public int Hitpoints = 1;
 
-    public static event Action<Brick> OnBrickDestruction;
+    //public static event Action<Brick> OnBrickDestruction;
 
     //private void Start()
     //{
@@ -18,7 +18,7 @@ public class Brick : MonoBehaviour
 
     private void Awake()
     {
-        this.sr = this.GetComponent<SpriteRenderer>();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -28,23 +28,23 @@ public class Brick : MonoBehaviour
     }
     private void ApplyCollisionLogic(Ball ball)
     {
-        this.Hitpoints--;
-        if (this.Hitpoints <=0)
+        Hitpoints--;
+        if (Hitpoints <=0)
         {
-            OnBrickDestruction?.Invoke(this);
-            Destroy(this.gameObject);
+            //OnBrickDestruction?.Invoke(this);
+            Destroy(gameObject);
         }
         else
         {
-            this.sr.sprite = BricksManager.Instance.Sprites[this.Hitpoints - 1];
+            sr.sprite = BricksManager.Instance.Sprites[Hitpoints - 1];
         }
     }
 
     public void Init(Transform containerTransform, Sprite sprite, Color color, int hitpoints)
     {
-        this.transform.SetParent(containerTransform);
-        this.sr.sprite = sprite;
-        this.sr.color = color;
-        this.Hitpoints = hitpoints;
+        transform.SetParent(containerTransform);
+        sr.sprite = sprite;
+        sr.color = color;
+        Hitpoints = hitpoints;
     }
 }
