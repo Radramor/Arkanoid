@@ -27,8 +27,12 @@ public class GameManager : MonoBehaviour
     public GameObject victoryScreen;
 
     public int AvailibleLives = 3;
+
     public int Lives { get; set; }
+
     public bool IsGameStarted { get; set; }
+    //потеря жизни
+    public event Action<int> OnLiveLost;
     private void Start()
     {
         this.Lives = this.AvailibleLives;
@@ -63,7 +67,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                //OnLiveLost?.Invoke(this.Lives);
+                OnLiveLost?.Invoke(this.Lives);
                 BallsManager.Instance.ResetBalls();
                 IsGameStarted = false;
                 BricksManager.Instance.LoadLevel(BricksManager.Instance.CurrentLevel);
