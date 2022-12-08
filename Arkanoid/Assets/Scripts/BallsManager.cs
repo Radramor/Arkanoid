@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
+[System.Serializable]
 public class BallsManager : MonoBehaviour
 {
     #region Singleton
@@ -25,8 +27,9 @@ public class BallsManager : MonoBehaviour
 
     #endregion
 
-    [SerializeField]
-    private Ball ballPrefab;
+    public static string path;
+
+    [SerializeField] private Ball ballPrefab;
 
     private Ball initialBall;
 
@@ -41,10 +44,12 @@ public class BallsManager : MonoBehaviour
         InitBall();
     }
 
+
     private void Update()
     {
         if (!GameManager.Instance.IsGameStarted)
         {
+            // Align ball position to the paddle position
             Vector3 paddlePosition = Paddle.Instance.gameObject.transform.position;
             Vector3 ballPosition = new Vector3(paddlePosition.x, paddlePosition.y + .27f, 0);
             initialBall.transform.position = ballPosition;
@@ -64,7 +69,6 @@ public class BallsManager : MonoBehaviour
         {
             Destroy(ball.gameObject);
         }
-        if(BricksManager.Instance.CurrentLevel < BricksManager.Instance.LevelsData.Count)
         InitBall();
     }
     private void InitBall()

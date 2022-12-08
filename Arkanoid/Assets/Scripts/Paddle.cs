@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using UnityEngine;
 
 public class Paddle : MonoBehaviour
@@ -21,26 +23,36 @@ public class Paddle : MonoBehaviour
     }
 
     #endregion
+
     private Camera mainCamera;
     private float paddleInitialY;
-    //private float defaultPaddleWidthInPixels = 200;
     private float defaultLeftClamp = -7.53f;
     private float defaultRightClamp = 7.56f;
     private float speed = 0.04f;
     private Vector2 moveDelta;
     private SpriteRenderer sr;
+    [SerializeField] private GameObject PauseScreen;
     private void Start()
     {
+        Load.LoadGame();
+        transform.position = Save.data.PaddlePosition;
         mainCamera = FindObjectOfType<Camera>();
         paddleInitialY = transform.position.y;
         sr = GetComponent<SpriteRenderer>();
     }
+
 
     private void Update()
     {
         moveDelta.x = Input.GetAxisRaw("Horizontal");
         PaddleMovement();
 
+    }
+
+    private void OnApplicationQuit()
+    {
+        Save.data.PaddlePosition = transform.position;
+        Save.SaveGame();
     }
 
     private void PaddleMovement()
@@ -50,7 +62,7 @@ public class Paddle : MonoBehaviour
         //float paddleShift = (defaultPaddleWidthInPixels - ((defaultPaddleWidthInPixels / 2) * sr.size.x)) / 2;
         float leftClamp = defaultLeftClamp;
         float rightClamp = defaultRightClamp;
-       
+
 
         var position = transform.position;
         switch (moveDelta.x)
@@ -64,7 +76,10 @@ public class Paddle : MonoBehaviour
         }
 
         float mousePositionPixels = Mathf.Clamp(position.x, leftClamp, rightClamp);
-        transform.position = new Vector3(mousePositionPixels, paddleInitialY, 0);
+        if (PauseScreen.activeSelf)
+            transform.position = new Vector3(transform.position.x, paddleInitialY, 0);
+        else
+            transform.position = new Vector3(mousePositionPixels, paddleInitialY, 0);
     }
 
     private void OnCollisionEnter2D(Collision2D coll)
