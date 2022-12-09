@@ -41,28 +41,23 @@ public class Paddle : MonoBehaviour
         sr = GetComponent<SpriteRenderer>();
     }
 
-
     private void Update()
     {
         moveDelta.x = Input.GetAxisRaw("Horizontal");
         PaddleMovement();
 
     }
-
+    // сохранение положения платформы при выходе из игры
     private void OnApplicationQuit()
     {
         Save.data.PaddlePosition = transform.position;
         Save.SaveGame();
     }
-
+    // движение платформы с помощью кнопок
     private void PaddleMovement()
     {
-
-
-        //float paddleShift = (defaultPaddleWidthInPixels - ((defaultPaddleWidthInPixels / 2) * sr.size.x)) / 2;
         float leftClamp = defaultLeftClamp;
         float rightClamp = defaultRightClamp;
-
 
         var position = transform.position;
         switch (moveDelta.x)
@@ -81,14 +76,14 @@ public class Paddle : MonoBehaviour
         else
             transform.position = new Vector3(mousePositionPixels, paddleInitialY, 0);
     }
-
+    //изменение скорости шарика при падении на разные части платформы
     private void OnCollisionEnter2D(Collision2D coll)
     {
         if (coll.gameObject.tag == "Ball")
         {
             Rigidbody2D ballRb = coll.gameObject.GetComponent<Rigidbody2D>();
             Vector3 hitPoint = coll.contacts[0].point;
-            Vector3 paddleCenter = new Vector3(this.gameObject.transform.position.x, this.gameObject.transform.position.y);
+            Vector3 paddleCenter = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y);
 
             ballRb.velocity = Vector2.zero;
 

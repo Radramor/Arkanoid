@@ -11,10 +11,8 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        Brick.OnBrickDestruction += OnBrickDestruction;
         BricksManager.Instance.OnLevelLoaded += OnLevelLoaded;
         GameManager.Instance.OnLiveLost += OnLiveLost;
-        //запуск метода при старте игры
         OnLiveLost(GameManager.Instance.AvailibleLives);
     }
     //строка жизней
@@ -54,7 +52,6 @@ public class UIManager : MonoBehaviour
 
     private void OnDisable()
     {
-        Brick.OnBrickDestruction -= OnBrickDestruction;
         BricksManager.Instance.OnLevelLoaded -= OnLevelLoaded;
     }
 }

@@ -31,15 +31,17 @@ public class GameManager : MonoBehaviour
     public int Lives { get; set; }
 
     public bool IsGameStarted { get; set; }
+
     //потеря жизни
     public event Action<int> OnLiveLost;
+
     private void Start()
     {
-        this.Lives = this.AvailibleLives;
+        Lives = AvailibleLives;
         Screen.SetResolution(1920, 1080, false);
         Ball.OnBallDeath += OnBallDeath;
-        Brick.OnBrickDestruction += OnBrickDestruction;
     }
+   // создание нового уровня, когда блоки закончились
     private void OnBrickDestruction(Brick obj)
     {
         if (BricksManager.Instance.RemainingBricks.Count <= 0)
@@ -59,15 +61,15 @@ public class GameManager : MonoBehaviour
     {
         if (BallsManager.Instance.Balls.Count <= 0)
         {
-            this.Lives--;
+            Lives--;
 
-            if (this.Lives < 1)
+            if (Lives < 1)
             {
                 GameOverScreen.SetActive(true);
             }
             else
             {
-                OnLiveLost?.Invoke(this.Lives);
+                OnLiveLost?.Invoke(Lives);
                 BallsManager.Instance.ResetBalls();
                 IsGameStarted = false;
                 BricksManager.Instance.LoadLevel(BricksManager.Instance.CurrentLevel);

@@ -65,7 +65,7 @@ public class BallsManager : MonoBehaviour
 
     public void ResetBalls()
     {
-        foreach (var ball in this.Balls.ToList())
+        foreach (var ball in Balls.ToList())
         {
             Destroy(ball.gameObject);
         }
@@ -78,7 +78,7 @@ public class BallsManager : MonoBehaviour
         initialBall = Instantiate(ballPrefab, startingPosition, Quaternion.identity);
         initialBallRb = initialBall.GetComponent<Rigidbody2D>();
 
-        this.Balls = new List<Ball>
+        Balls = new List<Ball>
         {
             initialBall
         };

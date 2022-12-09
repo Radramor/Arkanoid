@@ -26,13 +26,16 @@ public class BricksManager : MonoBehaviour
     }
 
     #endregion
-
+    // максимальное количество строк и колонн в уровнях
     private int maxRows = 10;
     private int maxCols = 18;
     private GameObject bricksContainer;
+
     //начальное положение первого кирпича
     private float initialBrickSpawnPositionX = -7.7f;
     private float initialBrickSpawnPositionY = 3.24f;
+
+    //расстояние смещения между блоками
     private float shiftAmountX = 0.9f;
     private float shiftAmountY = 0.5f;
 
@@ -49,68 +52,70 @@ public class BricksManager : MonoBehaviour
     public int InitialBricksCount { get; set; }
 
     public int CurrentLevel;
+
     private void Start()
     {
-        this.bricksContainer = new GameObject("BricksContainer");
-        this.LevelsData = this.LoadLevelsData();
-        this.GenerateBricks();
-        
+        bricksContainer = new GameObject("BricksContainer");
+        LevelsData = LoadLevelsData();
+        GenerateBricks();        
     }
 
     public void LoadLevel(int level)
     {
-        this.CurrentLevel = level;
-        this.ClearRemainingBricks();
-        this.GenerateBricks();
+        CurrentLevel = level;
+        ClearRemainingBricks();
+        GenerateBricks();
     }
+
     public void LoadNextLevel()
     {
-        this.CurrentLevel++;
+        CurrentLevel++;
 
-        if (this.CurrentLevel >= this.LevelsData.Count)
+        if (CurrentLevel >= LevelsData.Count)
         {
             GameManager.Instance.ShowVictoryScreen();
             
         }
         else
         {
-            this.LoadLevel(this.CurrentLevel);
+            LoadLevel(CurrentLevel);
         }
     }
+    //очистка при рестарте
     private void ClearRemainingBricks()
     {
-        foreach (Brick brick in this.RemainingBricks.ToList())
+        foreach (Brick brick in RemainingBricks.ToList())
         {
             Destroy(brick.gameObject);
         }
     }
     private void GenerateBricks()
     {
-        this.RemainingBricks = new List<Brick>();
-        int[,] currentLevelData = this.LevelsData[this.CurrentLevel];
+        RemainingBricks = new List<Brick>();
+        int[,] currentLevelData = LevelsData[CurrentLevel];
         float currentSpawnX = initialBrickSpawnPositionX;
         float currentSpawnY = initialBrickSpawnPositionY;
         //чтобы кирпичи не перекрывались
         float zShift = 0;
 
-        for (int row = 0; row <this.maxRows; row++)
+        for (int row = 0; row < maxRows; row++)
         {
-            for (int col = 0; col < this.maxCols; col++)
+            for (int col = 0; col < maxCols; col++)
             {
                 int brickType = currentLevelData[row, col];
 
                 if (brickType > 0)
                 {
                     Brick newBrick = Instantiate(brickPrefab, new Vector3(currentSpawnX, currentSpawnY, 0.0f - zShift), Quaternion.identity) as Brick;
-                    newBrick.Init(bricksContainer.transform, this.Sprites[brickType - 1], this.BrickColors[brickType], brickType);
+                    newBrick.Init(bricksContainer.transform, Sprites[brickType - 1], BrickColors[brickType], brickType);
                     
-                    this.RemainingBricks.Add(newBrick);
+                    RemainingBricks.Add(newBrick);
                     zShift += 0.0001f;
                 }
 
                 currentSpawnX += shiftAmountX;
                 //достигли ли конца столбцов
-                if (col + 1 == this.maxCols)
+                if (col + 1 == maxCols)
                 {
                     currentSpawnX = initialBrickSpawnPositionX;
                 }
@@ -119,7 +124,7 @@ public class BricksManager : MonoBehaviour
             currentSpawnY -= shiftAmountY;
         }
 
-        this.InitialBricksCount = this.RemainingBricks.Count;
+        InitialBricksCount = RemainingBricks.Count;
         OnLevelLoaded?.Invoke();
     }
 
@@ -133,7 +138,7 @@ public class BricksManager : MonoBehaviour
         int[,] currentLevel = new int[maxRows, maxCols];
         int currentRow = 0;
 
-        for (int row = 0; row <rows.Length; row++)
+        for (int row = 0; row < rows.Length; row++)
         {
             string line = rows[row];
 
@@ -149,7 +154,7 @@ public class BricksManager : MonoBehaviour
             }
             else
             {
-                //end of current level
+                // конец текущего уровня
                 currentRow = 0;
                 levelsData.Add(currentLevel);
                 currentLevel = new int[maxRows, maxCols];

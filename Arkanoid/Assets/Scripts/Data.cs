@@ -7,5 +7,4 @@ using UnityEngine;
 public class Data 
 {
     public Vector3 PaddlePosition;
-
 }
